@@ -1,0 +1,20 @@
+
+.urgentImportantLable {
+    font-weight: bold;
+    color: #00ff99;
+}
+
+.notUrgentImportantLable {
+    font-weight: bold;
+    color: #fdce3f;
+}
+
+.urgentNotImportantLable {
+    font-weight: bold;
+    color:#4da0ec
+}
+
+.notUrgentNotImportantLable {
+    font-weight: bold;
+    color: #fc3939;
+}
