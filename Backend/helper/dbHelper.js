@@ -1,3 +1,4 @@
+//Resource: https://www.scriptol.com/sql/sqlite-async-await.php
 const sqlite3 = require('sqlite3').verbose()
 var db
 

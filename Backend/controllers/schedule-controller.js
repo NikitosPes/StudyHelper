@@ -15,25 +15,30 @@ const sqlQueries = {
 class ScheduleController {
 
 	async getSchedule(req, res) {
-		const result = { monday: [], tuesday: [], wednsday: [], thursday: [], friday: [], saturday: [] };
 
-		sqlite.open(connectionString);
+		const responseTamplate = { monday: [], tuesday: [], wednsday: [], thursday: [], friday: [], saturday: [] };
+
+		await sqlite.open(connectionString);
+
 		const user = await sqlite.get(sqlQueries.GET_USER_BY_EMAIL, [req.username]);
 		const rows = await sqlite.all(sqlQueries.GET_SCHEDULE, [user.Id]);
+
 		let index = 1;
 		while(index < 7) {
 			let oneDaySchedule = rows.filter(item => item.DaysOfWeek_id === index)
 				.map(item => ({Id: item.Id, Time: item.Time, SubjectName: item.SubjectName}));
-			if(index === 1) result.monday.push(...oneDaySchedule);
-			if(index === 2) result.tuesday.push(...oneDaySchedule);
-			if(index === 3) result.wednsday.push(...oneDaySchedule);
-			if(index === 4) result.thursday.push(...oneDaySchedule);
-			if(index === 5) result.friday.push(...oneDaySchedule);
-			if(index === 6) result.saturday.push(...oneDaySchedule);
+			if(index === 1) responseTamplate.monday.push(...oneDaySchedule);
+			if(index === 2) responseTamplate.tuesday.push(...oneDaySchedule);
+			if(index === 3) responseTamplate.wednsday.push(...oneDaySchedule);
+			if(index === 4) responseTamplate.thursday.push(...oneDaySchedule);
+			if(index === 5) responseTamplate.friday.push(...oneDaySchedule);
+			if(index === 6) responseTamplate.saturday.push(...oneDaySchedule);
 			index++;
 		}
-		res.json(result);
-		sqlite.close();
+
+		await sqlite.close();
+
+		res.json(responseTamplate).status(200);
 	}
 
 }

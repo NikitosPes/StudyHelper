@@ -1,47 +1,4 @@
-.container {
+.studentListContainer {
     margin-top: 15px;
     width: 70%;
-}
-
-.columnsName {
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 1fr 2fr 1.5fr 0.2fr 0.2fr;
-    background-color: aqua;
-    height: 20px;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    padding-left: 5px;
-}
-
-.columnsName p {
-    margin: 0px;
-    font-weight: bold;
-}
-
-/* header */
-.sortButton {
-    display: flex;
-    align-items: center;
-    font-family : inherit;
-    font-size: 16px;
-    padding: 0;
-    text-align: left;
-    font-weight: bold;
-    border-radius: 5px;
-    background: none;
-    border: none;
-}
-
-.sortButton img {
-    height: 12px;
-    width: 12px;
-    margin-left: 3px;
-}
-
-.sorted {
-    transform: rotate(360deg);
-}
-
-.unsorted {
-    transform: rotate(180deg);
 }

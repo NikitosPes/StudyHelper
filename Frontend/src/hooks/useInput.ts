@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react";
 type inputType = 'text' | 'email' | 'password';
 
 interface useInputOptions {
-    type: inputType,
     require: boolean,
     minLength?: number, 
 }
 
-export const useInput = (initial: string, {type, minLength, require}:useInputOptions) => {
+export const useInput = (initial: string, type: inputType, { minLength, require }: useInputOptions) => {
 
     const [value, setValue] = useState<string>(initial);
     const [error, setError] = useState<string>('');
@@ -44,6 +43,7 @@ export const useInput = (initial: string, {type, minLength, require}:useInputOpt
         }
         setError('');
         setValid(true);
+        console.log(`form is valid ${isValid} + error ${error}`)
     } 
 
     const emailValidation = () => {
@@ -64,9 +64,25 @@ export const useInput = (initial: string, {type, minLength, require}:useInputOpt
         setValid(true);
     }
 
+    const setNewValue = (value: string) => {
+        setValue(value);
+        setValid(true);
+        console.log(isDirty);
+    }
+
+
+    const resetInput = () => {
+        setValue('');
+        setError('');
+        setDirty(false);
+        setValid(false);
+    }
+
+
     const checkValidation = () => {
         if(!isDirty) return;
-        switch(type){
+        console.log('check validation function')
+        switch(type) {
             case 'email': 
                 emailValidation();
                 break;
@@ -81,11 +97,14 @@ export const useInput = (initial: string, {type, minLength, require}:useInputOpt
     return {
         value,
         setValue,
+        setNewValue,
         error,
         isValid,
         setDirty,
+        isDirty,
         onChange: handlerChange,
-        onBlur: () => setDirty(true)
+        onBlur: () => setDirty(true),
+        resetInput
     }
 }
 

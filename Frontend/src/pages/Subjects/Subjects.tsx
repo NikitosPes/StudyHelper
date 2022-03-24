@@ -3,12 +3,11 @@ import API from '../../api'
 import styles from './Subjects.module.css'
 
 import { SubjectBlock } from './SubjectBlock/SubjectBlock';
-
-import { ISubjectModel } from '../../interfaces/models';
+import { SubjecResponseModel } from '../../models/SubjectModels'
 
 interface SubjectsProps {
-    exam: ISubjectModel [],
-    credit: ISubjectModel []
+    exam: SubjecResponseModel [],
+    credit: SubjecResponseModel []
 }
 
 export const Subjects: React.FC = () => {
@@ -19,8 +18,6 @@ export const Subjects: React.FC = () => {
         API.get('/subjects')
         .then(response => setData(response.data))
     }, [])
-
-
 
     return(
         <div className={styles.conteiner}>

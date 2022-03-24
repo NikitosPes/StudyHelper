@@ -2,7 +2,8 @@
     color: white;
     display: grid;
     grid-template-rows: 1fr 4fr;
-    overflow: visible;
+    background-image: url('http://assets.limetray.com/assets/loyalty/production/1573214254_1559036574vgerbvrbv.jpg');
+    background-repeat: repeat;
 }
 
 .examSubjects {
@@ -17,36 +18,3 @@
     align-items: center;
 }
 
-/* dsaf */
-/* hr {
-    margin: 0px;
-    margin-bottom: 15px;
-    margin-top: 5px;
-    background-color: white;
-    border: 0 none;
-    height: 0.7px;
-    width: 60%;
-}
-
-.subjectSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.subjectSection h2, hr {
-    align-self: flex-start;
-}
-
-.subjectSection:last-child {
-    margin-bottom: 5%;
-}
-
-.examSubjects {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 50px;
-    height: 100%;
-    width: 100%;
-}
- */

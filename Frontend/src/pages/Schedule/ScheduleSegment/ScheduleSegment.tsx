@@ -41,10 +41,9 @@ export const ScheduleSegment: React.FC<ScheduleSegmentProps>  = ({ ScheduleRows,
 }
 
 const ScheduleRow: React.FC<{subjectName?: string}> = ({ subjectName }) => {
-    //Refactor if statment
     return (
         <div className={styles.row}>
-            {subjectName ? <p>{subjectName}</p> : <p></p>}
+            {subjectName ? <p>{subjectName}</p> : null}
         </div>
     )
 }

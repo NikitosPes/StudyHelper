@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './Group.module.css'
 import API from '../../api';
 
@@ -6,17 +6,17 @@ import { StudentForm } from '../../forms/StudentForm';
 import { StudentsList } from './StudentsList/StudentsList';
 import { Modal } from '../../components/Modal/Modal';
 import { SearchInput } from '../../components/SearchInput/SearchInput';
+import { StudentListHeader } from './StudentListHeader/StudentListHeader';
+import { StudentResponseModel } from '../../models/StudentModles';
 
-import { IStudentModel, StudentRequestModel } from '../../interfaces/models';
+import {StudentRequestModel } from '../../interfaces/models';
 
 export const Group: React.FC = () => {
 
     const PATH = '/group';
-    const EMPTY_STUDENT: IStudentModel = {Id:0, Name:'', Surname:'', Email:'', Phone:''};//? Create Class
-
-    const [data, setData] = useState<IStudentModel []>([]);
+    const [data, setData] = useState<StudentResponseModel []>([]);
     const [modalActive, setModalActive] = useState<boolean>(false);
-    const [currentStudent, setCurrentStudent] = useState<IStudentModel>(EMPTY_STUDENT);
+    const [currentStudent, setCurrentStudent] = useState<StudentResponseModel | null>(null);
     const [searchingQuery, setQuery] = useState<string>('');
     
     useEffect(() => {
@@ -33,13 +33,13 @@ export const Group: React.FC = () => {
             });
     } 
 
-    const EditButtonHandler = (student: IStudentModel) => {
+    const EditButtonHandler = (student: StudentResponseModel) => {
         setCurrentStudent(student);
         setModalActive(true);
     } 
 
     const AddStudentHandler = () => {
-        setCurrentStudent(EMPTY_STUDENT);
+        setCurrentStudent(null);
         setModalActive(true);
     }
 
@@ -71,7 +71,7 @@ export const Group: React.FC = () => {
         API.post('/group', {student})
     }
 
-    const findStudentBySurname = (): IStudentModel[] => {
+    const findStudentBySurname = (): StudentResponseModel [] => {
         return data.filter(student =>{
             if(searchingQuery === '') 
                 return student;
@@ -84,15 +84,13 @@ export const Group: React.FC = () => {
     return (
         <div className={styles.container}>
             <SearchInput setValue={setQuery} text='Input student surname...'/>
-
+            <StudentListHeader sortByNameHandler={sortByName} sortBySurnameHandler={sortBySurname}/>
             <StudentsList students={findStudentBySurname()} 
-                editHandler={EditButtonHandler} 
-                deleteHandler={DeleteButtonHandler}
-                sortBySurname={sortBySurname}
-                sortByName={sortByName}/>
+                editClickHandler={EditButtonHandler} 
+                deleteClickHandler={DeleteButtonHandler}/>
                 
             <Modal active = {modalActive} setActive = {setModalActive} 
-                children = {<StudentForm student={currentStudent} editRequest={EditStudentRequest} createRequest={AddNewStudentRequest}/>}/>
+                children = {<StudentForm formIsActive={modalActive} updatingStudent={currentStudent} APICreateRequest={AddNewStudentRequest} APIEditRequest={EditStudentRequest} />}/>
 
             <button className={styles.addStudentButton} onClick={() => AddStudentHandler()}>Add new Student</button>
         </div>

@@ -86,7 +86,7 @@ export const Notes: React.FC = () => {
             </div>
             <NoteSegment notes={data} activateModal={setModalActive} currentNote={{value: currentNote, setValue: setCurrentNote, changePriority: changeNotePriority, setModalActive: setModalActive}}/>
             <Modal active={modalActive} setActive={setModalActive} 
-                children={<NotesFrom APICreateRequest={createNoteRequest} APIUpdateRequest={updateNoteRequest} updatingNote={currentNote} isActive={modalActive}/>} />
+                children={<NotesFrom APICreateRequest={createNoteRequest} APIUpdateRequest={updateNoteRequest} updatingNote={currentNote} formIsActive={modalActive}/>} />
             
         </div>
     )

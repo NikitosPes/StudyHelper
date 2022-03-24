@@ -5,26 +5,26 @@ import { useInput } from "../hooks/useInput";
 import { Input } from "./ControledInput/Input";
 import { NoteRequestModel, NoteResponseModel } from '../models/NoteModels'
 
-interface INoteFormProps {
-    isActive: boolean,
+interface NoteFormProps {
+    formIsActive: boolean,
     updatingNote: NoteResponseModel | null
     APICreateRequest: (note: NoteRequestModel) => void,
     APIUpdateRequest: (noteId: number, note: NoteRequestModel) => void
 }
 
 
-export const NotesFrom: React.FC<INoteFormProps> = ({ updatingNote, APICreateRequest, APIUpdateRequest, isActive }) => {
+export const NotesFrom: React.FC<NoteFormProps> = ({ formIsActive, updatingNote, APICreateRequest, APIUpdateRequest }) => {
 
-    const title = useInput('', {require: true, type: 'text'})
-    const text = useInput('', {require: true, type: 'text'})
+    const title = useInput('', 'text', {require: true});
+    const text = useInput('', 'text', { require: true });
     const [notePriority, setNotePriority] = useState<undefined | number>(undefined);
     const [formIsValid, setValidForm] = useState<boolean>(false);
 
     useEffect(() => {
-        if(isActive === true && updatingNote)
+        if(formIsActive === true && updatingNote)
             return isUpdatingMode(updatingNote);
         isCreateMode();
-    }, [isActive])
+    }, [formIsActive])
 
     useEffect(() => {
         validForm();

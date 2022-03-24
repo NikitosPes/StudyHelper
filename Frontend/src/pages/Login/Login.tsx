@@ -8,8 +8,8 @@ export const Login = () => {
 
     let navigate = useNavigate(); 
 
-    const email = useInput('', {require: true, type: 'email'});
-    const password = useInput('', {require: true, type: 'password'});
+    const email = useInput('', 'email', { require: true });
+    const password = useInput('', 'password', { require: true });
 
     const Clik = () => {
         axios.post('http://localhost:8080/api/sign-in',{
