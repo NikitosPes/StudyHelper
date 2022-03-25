@@ -1,15 +1,11 @@
 import React, { useContext } from 'react';
+
 import { NoteContext } from '../NoteSegment/NoteSegment';
-import styles from './Note.module.css'
+import { NoteResponseModel } from '../../../models/NoteModels';
 
-import { INoteModel } from '../../../interfaces/models'
+import styles from './Note.module.css';
 
-
-interface NoteProps {
-    note: INoteModel
-}
-
-export const Note: React.FC<NoteProps> = ({ note }) => {
+export const Note: React.FC<{note: NoteResponseModel}> = ({ note }) => {
 
     const contextValue = useContext(NoteContext);
 
@@ -23,7 +19,7 @@ export const Note: React.FC<NoteProps> = ({ note }) => {
     }
 
     return(
-        <div className={styles.container} onClick={onClickHandler}  draggable={true} onDragStart={(e) => dragStartHandler(e)}>
+        <div className={styles.noteContainer} onClick={onClickHandler}  draggable={true} onDragStart={(e) => dragStartHandler(e)}>
                 <h3>{note.Title}</h3>
                 <p>{note.Text}</p>
         </div>

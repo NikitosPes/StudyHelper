@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import styles from './Notes.module.css'
-import API from '../../api';
 
-import { Modal } from '../../components/Modal/Modal';
 import { NoteSegment } from './NoteSegment/NoteSegment';
-import { NotesFrom } from '../../forms/NotesForm';
+import { Modal } from '../../components/Modal/Modal';
+import { NotesFrom } from '../../forms/NoteForm/NotesForm';
 
-import { INoteModel } from '../../interfaces/models'
-import { ArraysOfNotes } from '../../interfaces/models';
+import { ArraysOfNotes } from '../../helpers/interfaces';
+import { NoteRequestModel, NoteResponseModel } from '../../models/NoteModels';
 
-import { NoteRequestModel } from '../../models/NoteModels';
+import API from '../../helpers/api';
+import styles from './Notes.module.css';
 
 const initServerData  = {
     urgentImportant: [],
@@ -21,7 +20,7 @@ const initServerData  = {
 export const Notes: React.FC = () => {
 
     const [data, setData] = useState<ArraysOfNotes>(initServerData);
-    const [currentNote, setCurrentNote] = useState<INoteModel | null>(null);
+    const [currentNote, setCurrentNote] = useState<NoteResponseModel | null>(null);
     const [modalActive, setModalActive] = useState<boolean>(false);
 
     useEffect(() => {
@@ -30,7 +29,7 @@ export const Notes: React.FC = () => {
 
     const fetchData = async() => {
         try {
-            const response = await API.get('notes');
+            const response = await API.get('/notes');
             const { ...result } = response.data;
             setData(result);
         } catch(e) {
@@ -38,7 +37,23 @@ export const Notes: React.FC = () => {
         }
     }
 
-    const removeChangedNoteFromSection = (note: INoteModel, noteArr: ArraysOfNotes): ArraysOfNotes => {
+    const createNoteRequest = (note: NoteRequestModel) => {
+        API.post('notes' , {note});
+    }
+
+    const updateNoteRequest = (noteId: number, note: NoteRequestModel) => {
+        API.put(`notes/${noteId}`, {note});
+    }
+
+    const changeNotePriority = (note: NoteResponseModel,  newPriority: number) => {
+        if(note.Priority === newPriority) return;
+        let tempData = addNotetoNewSection(note, newPriority, data);
+        note.Priority = newPriority;
+        API.put(`notes/${note.Id}`, {note})
+        setData(tempData);
+    }
+
+    const removeChangedNoteFromSection = (note: NoteResponseModel, noteArr: ArraysOfNotes): ArraysOfNotes => {
         let result = {...noteArr}
         if(note.Priority === 1) result.urgentImportant = result.urgentImportant.filter(item => item.Id !== note.Id);
         if(note.Priority === 2) result.notUrgentImportant = result.notUrgentImportant.filter(item => item.Id !== note.Id);
@@ -47,7 +62,7 @@ export const Notes: React.FC = () => {
         return result;
     }
 
-    const addNotetoNewSection = (note: INoteModel,  newPriority: number, noteArr: ArraysOfNotes) => {
+    const addNotetoNewSection = (note: NoteResponseModel,  newPriority: number, noteArr: ArraysOfNotes) => {
         let result = removeChangedNoteFromSection(note, noteArr);
         note.Priority = newPriority;
         if(newPriority === 1) result.urgentImportant.push(note);
@@ -55,22 +70,6 @@ export const Notes: React.FC = () => {
         if(newPriority === 3) result.urgentNotImportant.push(note);
         if(newPriority === 4) result.notUrgentNotImportant.push(note);
         return result;
-    }
-
-    const changeNotePriority = (note: INoteModel,  newPriority: number) => {
-        if(note.Priority === newPriority) return;
-        let tempData = addNotetoNewSection(note, newPriority, data);
-        note.Priority = newPriority;//!REFACTOR
-        API.put(`notes/${note.Id}`, {...note})
-        setData(tempData);
-    }
-
-    const createNoteRequest = (note: NoteRequestModel) => {
-        API.post('notes' , {...note});
-    }
-
-    const updateNoteRequest = (noteId: number, note: NoteRequestModel) => {
-        API.put(`notes/${noteId}`, {...note});
     }
 
     return (

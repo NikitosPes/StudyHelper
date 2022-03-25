@@ -15,7 +15,6 @@ interface StudentListProps {
 export const StudentsList: React.FC<StudentListProps> = ({ students, editClickHandler, deleteClickHandler }) => {
     return(
         <div className={styles.studentListContainer}>
-            {/* <StudentListHeader sortBySurnameHandler={sortBySurname} sortByNameHandler={sortByName}/> */}
                 {students.map((item, index) => {
                     return <StudentsListItem
                             index={index + 1} 

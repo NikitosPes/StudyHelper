@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from './NoteForm.module.css'
 
-import { useInput } from "../hooks/useInput";
-import { Input } from "./ControledInput/Input";
-import { NoteRequestModel, NoteResponseModel } from '../models/NoteModels'
+import { useInput } from "../../hooks/useInput";
+import { Input } from "../ControledInput/Input";
+import { NoteRequestModel, NoteResponseModel } from '../../models/NoteModels'
 
 interface NoteFormProps {
     formIsActive: boolean,
@@ -21,30 +21,34 @@ export const NotesFrom: React.FC<NoteFormProps> = ({ formIsActive, updatingNote,
     const [formIsValid, setValidForm] = useState<boolean>(false);
 
     useEffect(() => {
-        if(formIsActive === true && updatingNote)
+        if(updatingNote)
             return isUpdatingMode(updatingNote);
         isCreateMode();
     }, [formIsActive])
 
     useEffect(() => {
         validForm();
-    }, [title.value, text.value, notePriority])
+    }, [title.isValid, text.isValid, notePriority])
 
     const validForm = () => {
-        if(title.isValid && text.isValid && notePriority !== undefined)
+        if(updatingNote) {
+            if(title.isValid && text.isValid && notePriority !== undefined) return setValidForm(true);
             return setValidForm(true);
+        }
+        if(title.isValid && text.isValid && notePriority) return setValidForm(true);
         setValidForm(false);
     }
 
     const isUpdatingMode = (updatingNote: NoteResponseModel) => {
         title.setValue(updatingNote.Title);
         text.setValue(updatingNote.Text);
-        setNotePriority(updatingNote.Priority);//TODO: chack proper radio button
+        title.setDirty(true);
+        text.setDirty(true);
     }
 
     const isCreateMode = () => {
-        title.setValue('');
-        text.setValue('');
+        title.resetInput();
+        text.resetInput();
         setNotePriority(undefined);
     }
 
@@ -65,13 +69,12 @@ export const NotesFrom: React.FC<NoteFormProps> = ({ formIsActive, updatingNote,
             <form>
                 <Input label="Title" onChange={title.onChange} onBlur={title.onBlur} value={title.value} error={title.error}/>
                 <Input label="Text" onChange={text.onChange} onBlur={text.onBlur} value={text.value} error={text.error}/>
-                <ChoosePriorityNoteBlock setPriority={setNotePriority}/>
+                {updatingNote ? null : <ChoosePriorityNoteBlock setPriority={setNotePriority}/>}
                 <button onClick={updatingNote ? updateNoteRequest : createNoteRequest} disabled={!formIsValid}>Submit</button>
             </form>
         </>
     )
 }
-
 
 
 const ChoosePriorityNoteBlock: React.FC<{setPriority:(priority: number) => void}> = ({ setPriority }) => {

@@ -4,8 +4,9 @@
     background-color: aqua;
     height: 20px;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-top: 10px;
     padding-left: 5px;
+    width: 70%;
 }
 
 .columnsName p {

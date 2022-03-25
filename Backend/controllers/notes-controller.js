@@ -39,6 +39,7 @@ class NoteController {
 	async createNote(req, res) {
 
 		const note = req.body.note;
+		console.log(note)
 		const entry = `'${note.Title}', '${note.Text}', '${note.Priority}'`;
 
 		await sqlite.open(connectionString);
@@ -58,6 +59,7 @@ class NoteController {
 	async editNodeById(req, res) {
 
 		const newNote = req.body.note;
+		console.log(req.body);
 
 		await sqlite.open(connectionString);
 

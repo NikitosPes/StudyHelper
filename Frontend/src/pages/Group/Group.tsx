@@ -1,33 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import styles from './Group.module.css'
-import API from '../../api';
+import API from '../../helpers/api';
 
-import { StudentForm } from '../../forms/StudentForm';
+import { StudentForm } from '../../forms/StudentForm/StudentForm';
 import { StudentsList } from './StudentsList/StudentsList';
 import { Modal } from '../../components/Modal/Modal';
 import { SearchInput } from '../../components/SearchInput/SearchInput';
 import { StudentListHeader } from './StudentListHeader/StudentListHeader';
-import { StudentResponseModel } from '../../models/StudentModles';
 
-import {StudentRequestModel } from '../../interfaces/models';
+import { StudentRequestModel, StudentResponseModel } from '../../models/StudentModles';
 
 export const Group: React.FC = () => {
 
-    const PATH = '/group';
     const [data, setData] = useState<StudentResponseModel []>([]);
-    const [modalActive, setModalActive] = useState<boolean>(false);
     const [currentStudent, setCurrentStudent] = useState<StudentResponseModel | null>(null);
+    const [modalActive, setModalActive] = useState<boolean>(false);
     const [searchingQuery, setQuery] = useState<string>('');
     
     useEffect(() => {
-        API.get(PATH)
+        API.get('/group')
             .then(response => setData(response.data));
     }, []);
 
-    useEffect(() => {findStudentBySurname()}, [searchingQuery])//!Refactor
+    useEffect(() => {findStudentBySurname()}, [searchingQuery]);
+
+    const EditStudentRequest = (id: number, student: StudentRequestModel) => {
+        API.put(`/group/${id}`, {student})   
+    }
+
+    const AddNewStudentRequest = (student: StudentRequestModel) => {
+        API.post('/group', {student})
+    }
 
     const DeleteButtonHandler = (id: number) => {
-        API.delete(`${PATH}/${id}`)
+        API.delete(`/group/${id}`)
             .then(() => {
                 setData(previousState => previousState.filter(item => item.Id !== id));
             });
@@ -63,14 +69,6 @@ export const Group: React.FC = () => {
         setData(tempState);
     } 
 
-    const EditStudentRequest = (student: StudentRequestModel, id: number) => {
-        API.put(`${PATH}/${id}`, {student})   
-    }
-
-    const AddNewStudentRequest = (student: StudentRequestModel) => {
-        API.post('/group', {student})
-    }
-
     const findStudentBySurname = (): StudentResponseModel [] => {
         return data.filter(student =>{
             if(searchingQuery === '') 
@@ -79,7 +77,6 @@ export const Group: React.FC = () => {
                 return student
         })
     }
-
 
     return (
         <div className={styles.container}>
@@ -92,7 +89,7 @@ export const Group: React.FC = () => {
             <Modal active = {modalActive} setActive = {setModalActive} 
                 children = {<StudentForm formIsActive={modalActive} updatingStudent={currentStudent} APICreateRequest={AddNewStudentRequest} APIEditRequest={EditStudentRequest} />}/>
 
-            <button className={styles.addStudentButton} onClick={() => AddStudentHandler()}>Add new Student</button>
+            <button className={styles.addStudentButton} onClick={AddStudentHandler}>Add new Student</button>
         </div>
     )
 }

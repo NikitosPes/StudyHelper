@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import API from '../../api'
+import API from '../../helpers/api'
 import styles from './Schedule.module.css'
 
 import { ScheduleSegment } from './ScheduleSegment/ScheduleSegment'

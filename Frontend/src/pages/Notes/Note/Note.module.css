@@ -1,4 +1,4 @@
-.container {
+.noteContainer {
     display: grid;
     grid-template-rows: 1fr 2fr;
     border: 1.5px aqua solid;
@@ -8,7 +8,7 @@
     width: 100%;
 }
 
-.container h3 {
+.noteContainer h3 {
     display: flex;
     justify-content: center;
     background-color: aqua;

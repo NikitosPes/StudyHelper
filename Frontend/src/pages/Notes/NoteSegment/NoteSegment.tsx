@@ -1,11 +1,11 @@
 import React from "react";
-import styles from './NoteSegment.module.css'
+
+import { ArraysOfNotes } from '../../../helpers/interfaces';
+import { curentNoteType } from '../../../helpers/interfaces';
 
 import { NoteSection } from "../NoteSection/NoteSection";
 
-import { ArraysOfNotes } from '../../../interfaces/models'
-import { curentNoteType } from '../../../interfaces/models'
-
+import styles from './NoteSegment.module.css';
 
 interface NoteSegmentProps {
     notes: ArraysOfNotes,
@@ -17,7 +17,7 @@ export const NoteContext = React.createContext<curentNoteType | undefined>(undef
 
 export const NoteSegment: React.FC<NoteSegmentProps> = ({ notes, currentNote, activateModal }) => {
 
-    const clickButtonHandler = () => {
+    const clickAddButtonHandler = () => {
         currentNote.setValue(null);
         activateModal(true);
     }
@@ -39,7 +39,7 @@ export const NoteSegment: React.FC<NoteSegmentProps> = ({ notes, currentNote, ac
                     <NoteSection notes={notes.notUrgentNotImportant} priority={4}/>
                 </div>
 
-                <button className={styles.addButton} onClick={clickButtonHandler}>Add</button>
+                <button className={styles.addButton} onClick={clickAddButtonHandler}>Add</button>
             </div>
         </NoteContext.Provider>
     )

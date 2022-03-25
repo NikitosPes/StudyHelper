@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useInput, errorstyles} from "../hooks/useInput";
+import { useInput } from "../../hooks/useInput";
 
-import { StudentRequestModel } from '../interfaces/models'
-import { IStudentModel } from '../interfaces/models'
-import { Input } from "./ControledInput/Input";
+import { Input } from "../ControledInput/Input";
+import { StudentRequestModel, StudentResponseModel } from '../../models/StudentModles';
 
 interface StudentFormProps {
     formIsActive: boolean,
-    updatingStudent: IStudentModel | null,
+    updatingStudent: StudentResponseModel | null,
     APICreateRequest: (student: StudentRequestModel) => void,
-    APIEditRequest: (student: StudentRequestModel, id: number) => void,
+    APIEditRequest: (id: number, student: StudentRequestModel) => void,
 }
 
 export const StudentForm: React.FC<StudentFormProps> = ({ formIsActive, updatingStudent, APICreateRequest, APIEditRequest }) => {
@@ -21,7 +20,6 @@ export const StudentForm: React.FC<StudentFormProps> = ({ formIsActive, updating
     const [formIsValid, setValidForm] = useState(false);
 
     useEffect(() => {
-        console.log('form useEffect' + ' ' + updatingStudent?.Name)
         if(updatingStudent) 
             return isUpdateMode(updatingStudent);
         isCreateMode();
@@ -29,8 +27,7 @@ export const StudentForm: React.FC<StudentFormProps> = ({ formIsActive, updating
 
     useEffect(() => {
         validForm();
-        console.log('valid form useEffect')
-    }, [name.value, surname.value, email.value, phone.value])
+    }, [name.isValid, surname.isValid, email.isValid, phone.isValid])
 
     const validForm = () => {
         if(name.isValid && surname.isValid && email.isValid && phone.isValid)
@@ -39,11 +36,14 @@ export const StudentForm: React.FC<StudentFormProps> = ({ formIsActive, updating
     }
 
     const isUpdateMode = (student: StudentRequestModel) => {
-        name.setNewValue(student.Name);
-        console.log(`Valid of name ${name.isValid} value ${name.value}`)
+        name.setValue(student.Name);
         surname.setValue(student.Surname);
         email.setValue(student.Email);
         phone.setValue(student.Phone);
+        name.setDirty(true);
+        surname.setDirty(true);
+        phone.setDirty(true);
+        email.setDirty(true);
     }
 
     const isCreateMode = () => {
@@ -51,6 +51,17 @@ export const StudentForm: React.FC<StudentFormProps> = ({ formIsActive, updating
         surname.resetInput();
         email.resetInput();
         phone.resetInput();
+    }
+
+    const createStudentRequest = () => {
+        let student = new StudentRequestModel(name.value, surname.value, email.value, phone.value);
+        APICreateRequest(student);
+    }
+
+    const updateStudentRequest = () => {
+        if(updatingStudent === null) return;
+        let student = new StudentRequestModel(name.value, surname.value, email.value, phone.value);
+        APIEditRequest(updatingStudent.Id, student);
     }
 
     return (
@@ -61,7 +72,7 @@ export const StudentForm: React.FC<StudentFormProps> = ({ formIsActive, updating
                 <Input label="Surname" onChange={surname.onChange} onBlur={surname.onBlur} value={surname.value} error={surname.error}/>
                 <Input label="Email" onChange={email.onChange} onBlur={email.onBlur} value={email.value} error={email.error}/>
                 <Input label="Phone" onChange={phone.onChange} onBlur={phone.onBlur} value={phone.value} error={phone.error}/>
-                <input type="submit" disabled = {!formIsValid} />
+                <input type="submit" disabled = {!formIsValid} onClick={updatingStudent ? updateStudentRequest : createStudentRequest} />
             </form>
         </>
     )

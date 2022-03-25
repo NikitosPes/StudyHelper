@@ -23,7 +23,7 @@ class GroupController {
 	async createStudent (req, res) {
 
 		const createdStudent = req.body.student;
-		const entry = `'${createdStudent.Name}', '${createdStudent.Surname}', '${createdStudent.Phone}', '${createdStudent.Email}'`;
+		const entry = `'${createdStudent.Name}', '${createdStudent.Surname}', '${createdStudent.Email}', '${createdStudent.Phone}'`;
 
 		await sqlite.open(connectionString);
 
@@ -43,7 +43,7 @@ class GroupController {
 	async updateStudent (req, res) {
 
 		const updatingStudent = req.body.student;
-
+		console.log(req.body)
 		await sqlite.open(connectionString);
 
 		try {

@@ -7,11 +7,6 @@
     grid-template-columns: 0.2fr 1fr 1fr 2fr 1.5fr 0.2fr 0.2fr;
 }
 
-.inner {
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 1fr 2fr 1.5fr 0.2fr 0.2fr;
-}
-
 .listItemContainer:hover {
     border-left: 1px solid aqua;
     border-bottom: 1px solid aqua;

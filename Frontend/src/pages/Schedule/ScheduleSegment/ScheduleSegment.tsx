@@ -19,7 +19,7 @@ export const ScheduleSegment: React.FC<ScheduleSegmentProps>  = ({ ScheduleRows,
 
     const initRowsForSegment = (scheduleRows: ScheduleRowResponseModel []): ReactNode [] => {
         let rows: ReactNode [] = [];
-        times.map((currentTime)=>{
+        times.map((currentTime) => {
             let added = false;
             for(let row of scheduleRows){
                 if(row.Time === currentTime){

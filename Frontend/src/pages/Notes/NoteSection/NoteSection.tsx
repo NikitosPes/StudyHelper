@@ -4,7 +4,7 @@ import styles from './NoteSection.module.css'
 
 import { Note } from "../Note/Note";
 
-import { INoteModel } from '../../../interfaces/models'
+import { INoteModel } from '../../../helpers/interfaces'
 
 
 interface NoteSectionProps {
@@ -42,7 +42,6 @@ export const NoteSection: React.FC<NoteSectionProps> = ({ notes, priority }) => 
     const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
         e.currentTarget.style.background = 'none'
     }
-
 
     const dropHandler = (e: React.DragEvent<HTMLDivElement>, newNote: INoteModel) => {
         e.preventDefault();
