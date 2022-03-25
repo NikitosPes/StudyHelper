@@ -1,0 +1,20 @@
+.conteiner {
+    color: white;
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+    background-image: url('http://assets.limetray.com/assets/loyalty/production/1573214254_1559036574vgerbvrbv.jpg');
+    background-repeat: repeat;
+}
+
+.examSubjects {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.creditSubjects {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+

@@ -1,0 +1,45 @@
+.listItemContainer {
+    color:white;
+    height: 40px;
+    padding-left: 10px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 1fr 2fr 1.5fr 0.2fr 0.2fr;
+}
+
+.listItemContainer:hover {
+    border-left: 1px solid aqua;
+    border-bottom: 1px solid aqua;
+    border-radius: 5px;
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
+
+.listItemContainer:hover .buttonIcon {
+    width: 25px;
+    height: 25px;
+}
+
+.listItemContainer button {
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    background-image: none; 
+    background: transparent;
+    float: left;
+    background-color: transparent;
+    margin-left: 20px;
+}
+
+.listItemContainer img {
+    padding: 0px;
+}
+
+.buttonIcon {
+    width: 0px;
+    height: 0px;
+}
+
+.buttonIcon:hover {
+    transform: scale(1.2);
+}
+
